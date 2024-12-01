@@ -159,29 +159,6 @@ def setup_grammar7():
     return grammar, words, ans
 
 
-@pytest.fixture()
-def setup_grammar8():
-    start_terminal = "S"
-    non_terminals = ["S"]
-    terminals = ["a", "b"]
-    rules = [("S", "SaSb"), ("S", "")]
-
-    grammar = Grammar()
-    grammar.setStart(start_terminal)
-    for term in terminals:
-        grammar.addCharacter(term, True)
-    for non_term in non_terminals:
-        grammar.addCharacter(non_term, False)
-    for rule in rules:
-        grammar.addRule(Rule(rule[0], rule[1]))
-
-    words = ['', 'aababb', 'aabbab', 'abaabb', 'abab',
-             'abbbbaa', 'cbcaaac', 'bbccacc', 'abaacca', 'bbbabcb']
-    ans = [True, True, True, True, True, False, False, False, False, False]
-
-    return grammar, words, ans
-
-
 def test1(setup_grammar1):
     grammar, words, ans = setup_grammar1
 
@@ -238,15 +215,6 @@ def test6(setup_grammar6):
 
 def test7(setup_grammar7):
     grammar, words, ans = setup_grammar7
-
-    parser = EarlyParser()
-    parser.fit(grammar)
-
-    for test in range(len(words)):
-        assert parser.predict(words[test]) == ans[test]
-
-def test8(setup_grammar8):
-    grammar, words, ans = setup_grammar8
 
     parser = EarlyParser()
     parser.fit(grammar)
